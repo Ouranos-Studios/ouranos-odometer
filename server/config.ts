@@ -1,3 +1,3 @@
 export const OdometerConfig = {
-    AscHUD: true,
+    AscHUD: false, // set to true if you use the asc-HUD
 };
