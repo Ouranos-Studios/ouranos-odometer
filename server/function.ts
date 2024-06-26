@@ -91,6 +91,10 @@ export function init() {
             const milage = await getVehicleMilage(player.vehicle);
             HudAPI.pushMilage(player, milage);
         }
+
+        // Here you can do stuff with the vehicle milage.
+
+        const milage = await getVehicleMilage(player.vehicle); // milage in meters
     }
 
     alt.setInterval(async () => {
