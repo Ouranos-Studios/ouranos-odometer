@@ -11,7 +11,7 @@ async function createMilagePropertie(vehicle: alt.Vehicle) {
         const vehicleDocument = Rebar.document.vehicle.useVehicle(vehicle);
 
         await vehicleDocument.setBulk({
-            milage: 1,
+            milage: 0,
         });
         console.log(
             `Added milage properties for Vehicle Model: ${Rebar.utility.vehicleHashes.getNameFromHash(vehicle.model)} | Milage: ${vehicleDocument.getField('milage')}`,
@@ -38,27 +38,21 @@ export async function startTracking(veh: alt.Vehicle) {
 async function updateMilage(vehicle: alt.Vehicle): Promise<void> {
     const rebarVehicle = Rebar.document.vehicle.useVehicle(vehicle).get();
     if (!rebarVehicle) {
-        // alt.logWarning('No rebar vehicle data found.');
         return;
     }
 
     const initialData = vehicleData.get(vehicle.id);
     if (!initialData) {
-        // alt.logError('No initial vehicle data found.');
         return;
     }
 
     const { position: initialPos, milage: initialMilage } = initialData;
     const currentPos = vehicle.pos;
 
-    alt.log(`initial Milage: ${initialMilage}`);
-
     const distance: number = Rebar.utility.vector.distance(currentPos, initialPos);
-    alt.log(`Distance: ${distance}`);
 
     if (typeof initialMilage === 'undefined') {
         const newMilage = distance;
-        alt.log(`new milage: ${newMilage}`);
 
         Rebar.document.vehicle.useVehicle(vehicle).set('milage', newMilage);
 
@@ -70,7 +64,6 @@ async function updateMilage(vehicle: alt.Vehicle): Promise<void> {
     }
 
     const newMilage = initialMilage + distance;
-    alt.log(`new milage: ${newMilage}`);
 
     Rebar.document.vehicle.useVehicle(vehicle).set('milage', newMilage);
 
