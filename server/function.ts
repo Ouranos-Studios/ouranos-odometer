@@ -4,6 +4,10 @@ import { OdometerConfig } from './config.js';
 
 const Rebar = useRebar();
 
+type MilageCallback = (milage: number) => void;
+
+const milageCallbacks: Array<MilageCallback> = [];
+
 const vehicleData = new Map();
 
 async function createMilagePropertie(vehicle: alt.Vehicle) {
@@ -80,21 +84,26 @@ async function getVehicleMilage(veh: alt.Vehicle) {
     return rebarVehicle.milage;
 }
 
+export function executeOnMilageUpdate(callback: MilageCallback) {
+    milageCallbacks.push(callback);
+}
+
 export function init() {
     alt.on('playerEnteredVehicle', async (player: alt.Player) => {
         await updateVehicleMilage(player);
     });
 
     async function updateVehicleMilage(player: alt.Player) {
+        const milage = await getVehicleMilage(player.vehicle); // milage in meters
+
         if (OdometerConfig.AscHUD) {
             const HudAPI = await Rebar.useApi().getAsync('ascended-hud-api');
-            const milage = await getVehicleMilage(player.vehicle);
             HudAPI.pushMilage(player, milage);
         }
 
-        // Here you can do stuff with the vehicle milage.
-
-        const milage = await getVehicleMilage(player.vehicle); // milage in meters
+        for (let cb of milageCallbacks) {
+            cb(milage);
+        }
     }
 
     alt.setInterval(async () => {
@@ -118,5 +127,5 @@ export function init() {
 
             await updateVehicleMilage(player);
         }
-    }, 2000);
+    }, OdometerConfig.frontendUpdateFrequency);
 }

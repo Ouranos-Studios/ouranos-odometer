@@ -1,17 +1,24 @@
 import * as alt from 'alt-server';
 
-import { useApi } from '@Server/api/index.js';
-import { startTracking } from './function.js';
+import { startTracking, executeOnMilageUpdate } from './function.js';
 import { useRebar } from '@Server/index.js';
 
+type MilageCallback = (milage: number) => void;
+
 const Rebar = useRebar();
+
 function useOdometerAPI() {
     function startTrackingVehicle(vehicle: alt.Vehicle) {
         startTracking(vehicle);
     }
 
+    function onMilageUpdate(callback: MilageCallback) {
+        executeOnMilageUpdate(callback);
+    }
+
     return {
         startTrackingVehicle,
+        onMilageUpdate,
     };
 }
 
@@ -21,4 +28,4 @@ declare global {
     }
 }
 
-useApi().register('ouranos-odometer-api', useOdometerAPI());
+Rebar.useApi().register('ouranos-odometer-api', useOdometerAPI());
