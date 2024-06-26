@@ -17,8 +17,8 @@ function useOdometerAPI() {
 
 declare global {
     export interface ServerPlugin {
-        ['dav-renz-odometer-api']: ReturnType<typeof useOdometerAPI>;
+        ['ouranos-odometer-api']: ReturnType<typeof useOdometerAPI>;
     }
 }
 
-useApi().register('dav-renz-odometer-api', useOdometerAPI());
+useApi().register('ouranos-odometer-api', useOdometerAPI());
