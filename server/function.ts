@@ -33,9 +33,11 @@ export async function startTracking(veh: alt.Vehicle) {
         await createMilagePropertie(veh);
     }
 
+    const updatedRebarDocument = Rebar.document.vehicle.useVehicle(veh).get();
+
     vehicleData.set(veh.id, {
         position: veh.pos,
-        milage: rebarDocument.milage,
+        milage: updatedRebarDocument.milage,
     });
 }
 
@@ -54,18 +56,6 @@ async function updateMilage(vehicle: alt.Vehicle): Promise<void> {
     const currentPos = vehicle.pos;
 
     const distance: number = Rebar.utility.vector.distance(currentPos, initialPos);
-
-    if (typeof initialMilage === 'undefined') {
-        const newMilage = distance;
-
-        Rebar.document.vehicle.useVehicle(vehicle).set('milage', newMilage);
-
-        vehicleData.set(vehicle.id, {
-            position: currentPos,
-            milage: newMilage,
-        });
-        return;
-    }
 
     const newMilage = initialMilage + distance;
 
