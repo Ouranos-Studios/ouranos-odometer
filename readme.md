@@ -6,7 +6,7 @@ This plugin add a backend system that keeps track of how many meters your vehicl
 
 -   Config to enable support for different HUDs (so far it supports the [asc-hud](https://github.com/ASCENDED-Team/asc-hud))
 -   Config to set frontend update frequency
--   API function to add the necessary data to your vehicle Document
+-   API function to start the milage tracking of a vehicle
 -   API function to add callbacks for frontend milage update
 
 ## Installation
