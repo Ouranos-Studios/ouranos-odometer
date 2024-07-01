@@ -86,6 +86,11 @@ export function init() {
     async function updateVehicleMilage(player: alt.Player) {
         const milage = await getVehicleMilage(player.vehicle); // milage in meters
 
+        if (OdometerConfig.AscHUD) {
+            const HudAPI = await Rebar.useApi().getAsync('ascended-hud-api');
+            HudAPI.pushData(player, HudAPI.GetHUDEvents().WebView.PUSH_MILAGE, milage, true);
+        }
+
         for (let cb of milageCallbacks) {
             cb(milage);
         }
