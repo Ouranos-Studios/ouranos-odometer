@@ -88,7 +88,7 @@ export function init() {
 
         if (OdometerConfig.AscHUD) {
             const HudAPI = await Rebar.useApi().getAsync('ascended-hud-api');
-            HudAPI.pushMilage(player, milage);
+            HudAPI.pushData(player, HudAPI.GetHUDEvents().WebView.PUSH_MILAGE, milage, true);
         }
 
         for (let cb of milageCallbacks) {
